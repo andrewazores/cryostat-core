@@ -1,10 +1,15 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '5.1.0'
     id 'jacoco'
     id 'com.github.spotbugs' version '1.7.1'
     id 'com.github.ksoichiro.console.reporter' version '0.6.2'
 }
+
+apply plugin: 'java-library'
+apply plugin: 'maven'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 repositories {
     mavenLocal()
@@ -41,17 +46,26 @@ dependencies {
     testImplementation 'org.mockito:mockito-inline:2.25.1'
 }
 
-publishing {
-    def coreVersion = '0.4.1';
-    publications {
-        maven(MavenPublication) {
-            groupId = 'com.redhat.rhjmc'
-            artifactId = 'containerjfr-core'
-            version = coreVersion
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
 
-            from components.java
-        }
-    }
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+group = 'com.github.rh-jmc-team'
+def coreVersion = '0.4.1';
+shadowJar {
+    archiveName = "$baseName-$coreVersion.$extension"
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+    archives shadowJar
 }
 
 test {
@@ -86,6 +100,3 @@ jacocoTestReport {
 }
 
 test.finalizedBy jacocoTestReport
-
-build.finalizedBy publishToMavenLocal
-
