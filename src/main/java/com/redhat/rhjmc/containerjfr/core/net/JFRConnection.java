@@ -32,10 +32,6 @@ public class JFRConnection implements AutoCloseable {
         this.service = new FlightRecorderServiceFactory().getServiceInstance(handle);
     }
 
-    public IConnectionHandle getHandle() {
-        return this.handle;
-    }
-
     public IFlightRecorderService getService() {
         return this.service;
     }
