@@ -62,6 +62,14 @@ public class DiscoveredJvmDescriptor {
         return new JMXServiceURL(o.get("JMX_SERVICE_URL"));
     }
 
+    public long getPid() {
+        try {
+            return Long.parseLong(o.get("PROCESS_ID"));
+        } catch (NumberFormatException nfe) {
+            return 0;
+        }
+    }
+
     @Override
     public String toString() {
         return o.toString();
