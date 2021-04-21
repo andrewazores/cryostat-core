@@ -60,5 +60,7 @@ public class CryostatCore {
             LogManager.getLogManager()
                     .updateConfiguration(config, k -> ((o, n) -> o != null ? o : n));
         }
+
+        System.out.println("hello world");
     }
 }
