@@ -30,6 +30,7 @@ jobs:
     - name: Fail if safe-to-test is not applied
       run: exit 0
 
+
   build-core:
     runs-on: ubuntu-latest
     outputs:
